@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Sophie 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg1:#ffe4ec;
+      --bg2:#f7f0ff;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --yes:#22c55e;
+      --no:#ef4444;
+      --dark:#111827;
+      --ring: rgba(236,72,153,.22);
+    }
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(900px 500px at 20% 10%, #f7f0ff, transparent 60%),
+                  radial-gradient(900px 500px at 80% 10%, #ffe4ec, transparent 60%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+      padding: 18px;
+    }
+
+    .card{
+      background: rgba(255,255,255,.95);
+      width:min(720px, 96vw);
+      padding: 22px 18px;
+      border-radius: 22px;
+      box-shadow: 0 20px 55px rgba(0,0,0,.16);
+      border: 1px solid rgba(0,0,0,.06);
+      backdrop-filter: blur(8px);
+      text-align:center;
+    }
+
+    h1{ margin: 6px 0 10px; font-size: 34px; }
+
+    .question{
+      margin: 0 0 8px;
+      font-size: 20px;
+      font-weight: 850;
+      color: var(--text);
+    }
+    .subtitle{
+      margin: 0 0 14px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .stage{
+      position:relative;
+      height: 240px;
+      margin: 14px 0 14px;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 25% 30%, rgba(236,72,153,.12), transparent 45%),
+        radial-gradient(circle at 75% 35%, rgba(99,102,241,.12), transparent 45%),
+        #fff0f6;
+      overflow:hidden;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+
+    button{
+      padding: 12px 22px;
+      border: none;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 750;
+      cursor: pointer;
+      box-shadow: 0 10px 18px rgba(0,0,0,.14);
+      user-select:none;
+      touch-action: manipulation;
+      transition: transform .08s ease, box-shadow .18s ease, opacity .18s ease;
+    }
+    button:active{ transform: scale(.98); }
+
+    #yesBtn{
+      background: var(--yes);
+      color: #fff;
+      position:absolute;
+      left:50%;
+      top:60%;
+      transform: translate(-120%, -50%);
+    }
+
+    #noBtn{
+      background: var(--no);
+      color: #fff;
+      position:absolute;
+      left:50%;
+      top:60%;
+      transform: translate(20%, -50%);
+    }
+
+    .hidden{ display:none; }
+
+    .yay{
+      margin-top: 14px;
+      text-align:left;
+      border-top: 1px solid rgba(0,0,0,.06);
+      padding-top: 14px;
+    }
+
+    .yayHeader{
+      text-align:center;
+      margin-bottom: 10px;
+    }
+
+    .gifBox{
+      text-align:center;
+      margin: 12px 0 16px;
+    }
+
+    .gifBox img{
+      max-width:100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.18);
+    }
+
+    .options{
+      display:grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .opt{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      padding: 10px 12px;
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: 14px;
+      cursor:pointer;
+      background:#fff;
+      transition: transform .08s ease, box-shadow .18s ease, border-color .18s ease;
+      outline: 2px solid transparent;
+    }
+    .opt:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(0,0,0,.08);
+      border-color: rgba(236,72,153,.35);
+    }
+    .opt:has(input:checked){
+      outline: 6px solid var(--ring);
+      border-color: rgba(236,72,153,.30);
+    }
+    .opt input{ margin-top: 2px; }
+    .opt b{ display:block; }
+    .opt small{ display:block; color: var(--muted); margin-top: 2px; }
+
+    .timeBox{
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 14px;
+      background: #f9fafb;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+    .timeRow{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content: space-between;
+    }
+    .timeRow label{
+      font-weight: 750;
+      color: var(--text);
+    }
+    input[type="time"]{
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,.12);
+      font-size: 15px;
+      min-width: 160px;
+      background:#fff;
+    }
+    .times{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top: 14px;
+    }
+    .secondary{
+      background: var(--dark);
+      color:#fff;
+      box-shadow:0 10px 18px rgba(17,24,39,.22);
+    }
+    .ghost{
+      background:#fff;
+      color:#111827;
+      border: 1px solid rgba(0,0,0,.12);
+      box-shadow:none;
+      font-weight:750;
+    }
+
+    .confirmCard{
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #fff, #fff7fb);
+      border: 1px solid rgba(0,0,0,.10);
+      box-shadow: 0 10px 22px rgba(0,0,0,.06);
+    }
+    .confirmCard h3{
+      margin: 0 0 6px;
+      text-align:center;
+      font-size: 18px;
+    }
+    .confirmLine{
+      color: var(--muted);
+      font-size: 14px;
+      margin: 6px 0;
+    }
+    .confirmStrong{
+      color: var(--text);
+      font-weight: 800;
+    }
+    .confirmText{
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.06);
+      color: var(--text);
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+    .miniRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top: 10px;
+    }
+
+    /* ✅ 2) Confirm “pop” animation */
+    @keyframes pop {
+      0% { transform: scale(.98); opacity: .6; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .popAnim { animation: pop .18s ease-out; }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Sophie 💖</h1>
+
+    <div class="question">Will you be my Valentine?</div>
+    <div class="subtitle">I’m in London, but my heart is with you 💌</div>
+
+    <div class="stage" id="stage">
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </div>
+
+    <div class="yay hidden" id="yayBox">
+      <div class="yayHeader">
+        <h2 style="margin:0;">💖 YAY!!! 💖</h2>
+        <div style="margin-top:6px;color:var(--muted);">
+          Okay… you just made my whole day 😘
+        </div>
+      </div>
+
+      <div class="gifBox">
+        <img
+          src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
+          alt="Happy celebration"
+        >
+        <div style="margin-top:10px;">I love you ❤️</div>
+      </div>
+
+      <div style="font-weight:850;margin:6px 0 6px;">Pick our long-distance date:</div>
+
+      <div class="options" role="group" aria-label="Date options">
+        <label class="opt">
+          <input type="radio" name="plan" value="🎬 Movie night (on call)" checked>
+          <div>
+            <b>🎬 Movie night (on call)</b>
+            <small>Same movie, same time, snacks included.</small>
+          </div>
+        </label>
+
+        <label class="opt">
+          <input type="radio" name="plan" value="🍝 Dinner date (video call)">
+          <div>
+            <b>🍝 Dinner date (video call)</b>
+            <small>Candles + playlist + London-to-you vibes.</small>
+          </div>
+        </label>
+
+        <label class="opt">
+          <input type="radio" name="plan" value="🎮 Game night">
+          <div>
+            <b>🎮 Game night</b>
+            <small>Quick, fun, and together.</small>
+          </div>
+        </label>
+      </div>
+
+      <div class="timeBox">
+        <div class="timeRow">
+          <label for="timeTbilisi">Choose time on <b>14 February</b> (Georgia time)</label>
+          <input id="timeTbilisi" type="time" value="20:00" step="300">
+        </div>
+        <div class="times" id="timePreview"></div>
+      </div>
+
+      <div class="actions">
+        <button class="secondary" id="confirmBtn">Confirm 💌</button>
+        <button class="secondary" id="copyBtn">Copy message</button>
+        <button class="ghost" id="resetBtn" type="button">Reset</button>
+      </div>
+
+      <div class="confirmCard hidden" id="confirmCard">
+        <h3>✅ Locked in</h3>
+        <div class="confirmLine">Plan: <span class="confirmStrong" id="cPlan"></span></div>
+        <div class="confirmLine">Georgia time: <span class="confirmStrong" id="cGeo"></span></div>
+        <div class="confirmLine">London time: <span class="confirmStrong" id="cLon"></span></div>
+
+        <div class="confirmText" id="cText"></div>
+
+        <div class="miniRow">
+          <button class="secondary" id="emailBtn">Send to Luka ✉️</button>
+          <button class="ghost" id="copyTicketBtn" type="button">Copy this</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const stage = document.getElementById("stage");
+    const yayBox = document.getElementById("yayBox");
+
+    const timeInput = document.getElementById("timeTbilisi");
+    const timePreview = document.getElementById("timePreview");
+    const copyBtn = document.getElementById("copyBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    const confirmBtn = document.getElementById("confirmBtn");
+    const confirmCard = document.getElementById("confirmCard");
+    const cPlan = document.getElementById("cPlan");
+    const cGeo  = document.getElementById("cGeo");
+    const cLon  = document.getElementById("cLon");
+    const cText = document.getElementById("cText");
+
+    const emailBtn = document.getElementById("emailBtn");
+    const copyTicketBtn = document.getElementById("copyTicketBtn");
+
+    // NO button runs away (stable)
+    function moveNo(){
+      const padding = 10;
+      const maxX = stage.clientWidth  - noBtn.offsetWidth  - padding;
+      const maxY = stage.clientHeight - noBtn.offsetHeight - padding;
+
+      const x = Math.max(padding, Math.floor(Math.random() * (maxX + 1)));
+      const y = Math.max(padding, Math.floor(Math.random() * (maxY + 1)));
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+      noBtn.style.transform = "none";
+    }
+
+    noBtn.addEventListener("pointerenter", moveNo);
+    noBtn.addEventListener("pointerdown", (e) => { e.preventDefault(); moveNo(); });
+    noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNo(); });
+
+    /* ✅ 1) Auto-set the Valentine year */
+    const MONTH = 2, DAY = 14;
+
+    // Always target the next upcoming Feb 14 (in Tbilisi time)
+    function getValentineYear() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = now.getMonth() + 1; // 1-12
+      const d = now.getDate();
+      if (m > 2 || (m === 2 && d > 14)) return y + 1;
+      return y;
+    }
+
+    const YEAR = getValentineYear();
+
+    function dateFromTbilisiWallClock(hh, mm){
+      const tbilisiOffsetMinutes = 4 * 60; // UTC+4
+      const utcMinutes = (hh * 60 + mm) - tbilisiOffsetMinutes;
+      const baseUtc = Date.UTC(YEAR, MONTH - 1, DAY, 0, 0, 0);
+      return new Date(baseUtc + utcMinutes * 60 * 1000);
+    }
+
+    function getSelectedPlan(){
+      const picked = document.querySelector('input[name="plan"]:checked');
+      return picked ? picked.value : "a cute plan";
+    }
+
+    function formatForTZ(d, tz){
+      return new Intl.DateTimeFormat("en-GB", {
+        timeZone: tz,
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        hour: "2-digit",
+        minute: "2-digit"
+      }).format(d);
+    }
+
+    function updateTimePreview(){
+      const [hStr, mStr] = (timeInput.value || "20:00").split(":");
+      const hh = parseInt(hStr, 10);
+      const mm = parseInt(mStr, 10);
+
+      const d = dateFromTbilisiWallClock(hh, mm);
+      const geo = formatForTZ(d, "Asia/Tbilisi");
+      const lon = formatForTZ(d, "Europe/London");
+
+      timePreview.innerHTML =
+        `<div><b>Georgia (Tbilisi):</b> ${geo}</div>` +
+        `<div><b>London:</b> ${lon}</div>`;
+    }
+
+    timeInput.addEventListener("input", updateTimePreview);
+
+    yesBtn.addEventListener("click", () => {
+      yayBox.classList.remove("hidden");
+      noBtn.style.display = "none";
+      yesBtn.textContent = "YES 💖";
+      updateTimePreview();
+    });
+
+    function buildTicketText(){
+      const plan = getSelectedPlan();
+      const [hStr, mStr] = (timeInput.value || "20:00").split(":");
+      const hh = parseInt(hStr, 10);
+      const mm = parseInt(mStr, 10);
+      const d = dateFromTbilisiWallClock(hh, mm);
+
+      const geo = formatForTZ(d, "Asia/Tbilisi");
+      const lon = formatForTZ(d, "Europe/London");
+
+      return {
+        plan,
+        geo,
+        lon,
+        message:
+`Sophie 💖
+
+It’s a date.
+
+Plan: ${plan}
+Time (Georgia): ${geo}
+Time (London): ${lon}
+
+London is far, but you’re my favourite place.
+See you on call — and I’ll make it special ❤️
+— Luka`
+      };
+    }
+
+    confirmBtn.addEventListener("click", () => {
+      const t = buildTicketText();
+      cPlan.textContent = t.plan;
+      cGeo.textContent = t.geo;
+      cLon.textContent = t.lon;
+      cText.textContent = t.message;
+
+      confirmCard.classList.remove("hidden");
+
+      /* ✅ 2) “Confirmed” little pop */
+      confirmCard.classList.remove("popAnim");
+      void confirmCard.offsetWidth; // restart animation
+      confirmCard.classList.add("popAnim");
+
+      confirmCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      const t = buildTicketText();
+      try{
+        await navigator.clipboard.writeText(t.message);
+        copyBtn.textContent = "Copied ✅";
+        setTimeout(() => copyBtn.textContent = "Copy message", 1400);
+      } catch {
+        alert(t.message);
+      }
+    });
+
+    copyTicketBtn.addEventListener("click", async () => {
+      const t = buildTicketText();
+      try{
+        await navigator.clipboard.writeText(t.message);
+        copyTicketBtn.textContent = "Copied ✅";
+        setTimeout(() => copyTicketBtn.textContent = "Copy this", 1400);
+      } catch {
+        alert(t.message);
+      }
+    });
+
+    emailBtn.addEventListener("click", () => {
+      const t = buildTicketText();
+      const to = "luka.shakhkulashvili@gmail.com";
+      const subject = encodeURIComponent("Valentine confirmed 💖");
+      const body = encodeURIComponent(t.message);
+      window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+    });
+
+    resetBtn.addEventListener("click", () => {
+      yayBox.classList.add("hidden");
+      confirmCard.classList.add("hidden");
+      noBtn.style.display = "block";
+      yesBtn.textContent = "Yes";
+
+      noBtn.style.left = "50%";
+      noBtn.style.top = "60%";
+      noBtn.style.transform = "translate(20%, -50%)";
+
+      timeInput.value = "20:00";
+      updateTimePreview();
+    });
+
+    setTimeout(moveNo, 350);
+  </script>
+</body>
+</html>
